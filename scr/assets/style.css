@@ -1,0 +1,29 @@
+body{
+    margin: 0;
+    background-color: #02025e;
+    color: #f5deb3;
+    font-family: Arial, sans-serif;
+}
+
+#header1{
+    text-align: center;
+}
+
+.dropdown-container{
+    background-color: #02025e;
+    color: #f5deb3;
+    font-family: Arial, sans-serif;
+}
+.Select-control {
+    background-color: #02025e;
+    color:#f5deb3;
+  }
+  
+.Select-menu-outer {
+    background-color: #02025e;
+    color: #f5deb3;
+}
+
+.Select-value-label {
+    color: #f5deb3 !important;
+}
