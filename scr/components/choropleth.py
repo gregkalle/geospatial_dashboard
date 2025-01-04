@@ -4,7 +4,10 @@ import pandas as pd
 import components.ids as ids
 from assets.style import COLOR
 
+
+
 def render(app:Dash)->html.Div:
+
     #create dataframe
     df = pd.read_csv("scr/data/owid_co2_data.csv")
 
@@ -26,9 +29,6 @@ def render(app:Dash)->html.Div:
         title_font_color=COLOR["text"],
         title_x=0.5,
         paper_bgcolor=COLOR["background"],
-        geo = dict(
-            scope = "world",
-        )
     )
     #update the font of the colorbar
     fig.update_coloraxes(
@@ -38,6 +38,15 @@ def render(app:Dash)->html.Div:
         colorbar_title_font_color=COLOR["text"]
     )
     
+    @app.callback(Output(ids.CHOROPLETH, "children"),Input(ids.DATA_DROPDOWN, "value"))
+    def update_choropleth(region:str)->html.Div:
+        #update the region
+        fig.update_geos(scope=region)
+        return html.Div(
+        dcc.Graph(figure=fig,style={'width': '90vw', 'height': '70vh'}),
+        id=ids.CHOROPLETH
+        )
+
     return html.Div(
         dcc.Graph(figure=fig,style={'width': '90vw', 'height': '70vh'}),
         id=ids.CHOROPLETH

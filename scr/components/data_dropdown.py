@@ -6,26 +6,16 @@ def render(app:Dash)->html.Div:
 
     #data to use in the dropdown
     #TODO: Data have to be changed to the actual data
-    all_data = ["country1","country2","country3"]
-
-    @app.callback(Output(ids.DATA_DROPDOWN,"value"),Input(ids.SELECT_ALL_BUTTON,"n_clicks"))
-    def select_all_countries(n_clicks:int)->list[str]:
-        return all_data
+    all_data = ['world','africa', 'asia', 'europe', 'north america', 'south america']
 
     return html.Div(
         children=[
-            html.H6("Select a country"),
+            html.H6("Select a region to display on the map:"),
             dcc.Dropdown(
                 style={"background-color":COLOR['background'],"color":COLOR['text']},
                 id=ids.DATA_DROPDOWN,
-                options=[{"label":data,"value":data} for data in all_data],
-                value=all_data,
-                multi=True                
-            ),
-            html.Button(
-                className=ids.DROPDOWN_BUTTON,
-                id=ids.SELECT_ALL_BUTTON,
-                children=["Select all countries"]
+                options=[{"label":data.upper(),"value":data} for data in all_data],
+                value=all_data[0]            
             )
         ]
     )
