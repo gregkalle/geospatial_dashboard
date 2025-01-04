@@ -39,3 +39,7 @@ button{
 button:hover{
     scale: 1.1;
 }
+
+.modebar-group{
+    color: #f5deb3;
+}
