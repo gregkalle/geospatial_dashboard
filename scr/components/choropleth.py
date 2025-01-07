@@ -8,6 +8,8 @@ from assets.style import COLOR
 
 def render(app:Dash)->html.Div:
 
+    #TODO megrate the dataframe in main and add to render-funktions
+
     #create dataframe
     df = pd.read_csv("https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv")
 
@@ -40,7 +42,7 @@ def render(app:Dash)->html.Div:
         colorbar_title_font_color=COLOR["text"]
     )
     
-    @app.callback(Output(ids.CHOROPLETH, "children"),Input(ids.DATA_DROPDOWN, "value"))
+    @app.callback(Output(ids.CHOROPLETH, "children"),Input(ids.DROPDOWN_CONTINENT, "value"))
     def update_choropleth(region:str)->html.Div:
         #update the region
         fig.update_geos(scope=region)
