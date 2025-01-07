@@ -43,3 +43,14 @@ button:hover{
 .modebar-group{
     color: #f5deb3;
 }
+
+.dropdown_span{
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.dropdown-container{
+    background-color: black;
+    left: 20vw;
+}

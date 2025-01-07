@@ -10,7 +10,7 @@ def create_layout(app:Dash)->html.Div:
                     children=[
                         html.H1(id=ids.HEADER1_NAME,children="Dashboard to show geospatial data"),
                         html.Hr(),
-                        html.Div(className=ids.DROPDOWN_CONTAINER,
+                        html.Div(style={"margin-left":"20vw"},className=ids.DROPDOWN_CONTAINER,
                                  children=[dropdown_continents(app),
                                            dropdown_years(app)]),
                         html.Div(className=ids.CHOROPLETH_CONTAINER,
