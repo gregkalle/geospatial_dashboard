@@ -1,4 +1,9 @@
 """Constant values of the dashboard"""
 
 
-START_YEAR = 1990
+START_YEAR:int = 1990
+
+DATA_URL:str="https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv"
+
+DATA_SOURCE:str="Data source: Our world in data: "
+DATA_SOURCE_URL:str="https://github.com/owid/co2-data"
