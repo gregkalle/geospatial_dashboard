@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, dcc
 import components.ids as ids
 from assets.style import COLOR
 
