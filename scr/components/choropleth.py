@@ -9,15 +9,17 @@ from assets.style import COLOR
 def render(app:Dash)->html.Div:
 
     #create dataframe
-    df = pd.read_csv("scr/data/owid_co2_data.csv")
+    df = pd.read_csv("https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv")
 
-    #filter the data for the year 2023
-    df_2023 = df[df["year"]==2023]
+    #last year in data
+    year = df["year"].max()
+    df_of_year = df[df["year"]==year]
+    
     #drop the rows with missing values
-    df_2023 = df_2023.dropna(subset=["iso_code","co2_per_capita"])
+    df_of_year = df_of_year.dropna(subset=["iso_code","co2_per_capita"])
 
     #create the choropleth map
-    fig = px.choropleth(df_2023,locations="iso_code",
+    fig = px.choropleth(df_of_year,locations="iso_code",
                         color='co2_per_capita',
                         hover_name="country",
                         range_color=(0,15),
@@ -25,7 +27,7 @@ def render(app:Dash)->html.Div:
                         color_continuous_scale=px.colors.sequential.Plasma_r)
     #update the layout
     fig.update_layout(
-        title="CO2 per capita in 2023",
+        title=f"CO2 per capita in {year}",
         title_font_color=COLOR["text"],
         title_x=0.5,
         paper_bgcolor=COLOR["background"],
