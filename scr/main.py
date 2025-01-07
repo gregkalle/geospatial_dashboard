@@ -3,6 +3,8 @@ from dash_bootstrap_components.themes import BOOTSTRAP
 
 from components.layout import create_layout
 
+#TODO megrate the dataframe in main and add to render-funktions
+
 def main()->None:
     #intitalize the app
     app = Dash(external_stylesheets=[BOOTSTRAP])
