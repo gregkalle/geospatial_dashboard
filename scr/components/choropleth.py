@@ -53,14 +53,17 @@ def render(app:Dash)->html.Div:
         fig.update_geos(scope=region)
 
         #add datasource annotation
-        fig.add_annotation(text=f"{const.DATA_SOURCE}\n<a href='{const.DATA_SOURCE_URL}'>{const.DATA_SOURCE_URL}</a>",
+        fig.add_annotation(text=f"<a href='{const.DATA_SOURCE_URL}' style='color:{COLOR["text"]}'>{const.DATA_SOURCE} {const.DATA_SOURCE_URL}</a>",
                             showarrow=False,
                             xanchor='right',
-                            x=1,
+                            x=0.5,
                             yanchor='top',
                             y=0
                         )
-        #TODO Annotation text color
+        #Change Annotation text color
+        #fig.update_annotations(
+        #    font=dict(color="#f5deb3")
+        #)
 
         return html.Div(
             children=[
