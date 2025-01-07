@@ -4,11 +4,11 @@
 LAYOUT = "app-div"
 HEADER1_NAME = "header1"
 
-#data dropdown
-DATA_DROPDOWN = "data-dropdown"
-DROPDOWN_CONTAINER = "dropdown-container"
-DROPDOWN_BUTTON = "dropdown-button"
-SELECT_ALL_BUTTON = "select-all-button"
+#dropdown ids
+DROPDOWN_CONTINENT = "dropdown_continent"
+DROPDOWN_YEAR = "dropdown-years"
+
+
 
 #choropleth
 CHOROPLETH = "choropleth"
