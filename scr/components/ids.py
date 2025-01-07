@@ -6,7 +6,8 @@ HEADER1_NAME = "header1"
 
 #dropdown ids
 DROPDOWN_CONTINENT = "dropdown_continent"
-DROPDOWN_YEAR = "dropdown-years"
+DROPDOWN_YEAR = "dropdown_years"
+DROPDOWN_CONTAINER = "dropdown_container"
 
 
 
