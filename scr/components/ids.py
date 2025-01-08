@@ -16,3 +16,7 @@ DROPDOWN_SPAN = "dropdown_span"
 CHOROPLETH = "choropleth"
 CHOROPLETH_CONTAINER = "choropleth-container"
 CHOROPLETH_GRAPH = "choropleth-graph"
+
+#subplots
+SUPLOTS = "subplots"
+SUPLOTS_CONTAINER = "subplots-container"

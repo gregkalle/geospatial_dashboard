@@ -10,3 +10,8 @@ DATA_SOURCE_URL:str="https://github.com/owid/co2-data"
 
 #this variable change its value allong the programm
 country_names=set([])
+
+ALL_CONTINENTS = ['world','africa', 'asia', 'europe', 'north america', 'south america']
+ALL_DEFAULT_ISO = ["DEU","ZAF","CHN","DEU","USA","BRA"]
+
+DEFAULT_NATION = dict(zip(ALL_CONTINENTS,ALL_DEFAULT_ISO))

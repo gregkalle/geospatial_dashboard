@@ -1,1 +1,0 @@
-"""renders a div with a figure of three diffrent plots conected to the choropleth"""
