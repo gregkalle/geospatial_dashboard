@@ -15,3 +15,4 @@ DROPDOWN_SPAN = "dropdown_span"
 #choropleth
 CHOROPLETH = "choropleth"
 CHOROPLETH_CONTAINER = "choropleth-container"
+CHOROPLETH_GRAPH = "choropleth-graph"

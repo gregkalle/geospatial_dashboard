@@ -1,30 +1,37 @@
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 import pandas as pd
+import components.constant_values as const
 import components.ids as ids
 from assets.style import COLOR
-import components.constant_values as const
 
+COUNTRY_NAMES = set({})
 
+def select_country(name:str)-> None:
+    if name in COUNTRY_NAMES:
+        COUNTRY_NAMES.remove(name)
+    else:
+        COUNTRY_NAMES.add(name)
 
-def render(app:Dash)->html.Div:
-
-    #TODO megrate the dataframe in main and add to render-funktions
-
-    #create dataframe
-    df = pd.read_csv(const.DATA_URL)
+def render(app:Dash, df:pd.DataFrame)->html.Div:
 
     @app.callback(Output(ids.CHOROPLETH, "children"),
                 [Input(ids.DROPDOWN_CONTINENT, "value"),
-                 Input(ids.DROPDOWN_YEAR,"value")
+                 Input(ids.DROPDOWN_YEAR,"value"),
+                 Input(ids.CHOROPLETH_GRAPH,"clickData")
                 ])
-    def update_choropleth(region:str, year:int)->html.Div:
+    def update_choropleth(region:str, year:int, clickData:dict)->html.Div:
 
         #get data from selected year
         df_of_year = df[df["year"]==year]
         
         #drop the rows with missing values
         df_of_year = df_of_year.dropna(subset=["iso_code","co2_per_capita"])
+
+        #set selected countries:
+        if clickData is None:
+            clickData = {"points":[{"hovertext":"Germany"}]}
+        select_country(name=clickData["points"][0]["hovertext"])
 
         #create the choropleth map
         fig = px.choropleth(df_of_year,locations="iso_code",
@@ -67,11 +74,18 @@ def render(app:Dash)->html.Div:
 
         return html.Div(
             children=[
-                dcc.Graph(figure=fig,style={'width': '90vw', 'height': '70vh'})
+                dcc.Graph(id=ids.CHOROPLETH_GRAPH,
+                          figure=fig,style={'width': '90vw', 'height': '70vh'}),
+                html.Label(str(clickData)),
+                html.Label(list(COUNTRY_NAMES))
             ],
             id=ids.CHOROPLETH
         )
 
     return html.Div(
+        children=[
+            dcc.Graph(id=ids.CHOROPLETH_GRAPH,
+                      figure=px.choropleth())
+        ],
         id=ids.CHOROPLETH
     )
