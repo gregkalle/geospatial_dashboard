@@ -5,13 +5,12 @@ import components.constant_values as const
 import components.ids as ids
 from assets.style import COLOR
 
-COUNTRY_NAMES = set({})
 
 def select_country(name:str)-> None:
-    if name in COUNTRY_NAMES:
-        COUNTRY_NAMES.remove(name)
+    if name in const.country_names:
+        const.country_names.remove(name)
     else:
-        COUNTRY_NAMES.add(name)
+        const.country_names.add(name)
 
 def render(app:Dash, df:pd.DataFrame)->html.Div:
 
@@ -22,16 +21,20 @@ def render(app:Dash, df:pd.DataFrame)->html.Div:
                 ])
     def update_choropleth(region:str, year:int, clickData:dict)->html.Div:
 
+        #set selected countries:
+        if clickData is None:
+            clickData = {"points":[{'location':"DEU"}]}
+        select_country(name=clickData["points"][0]['location'])
+        
         #get data from selected year
         df_of_year = df[df["year"]==year]
         
         #drop the rows with missing values
         df_of_year = df_of_year.dropna(subset=["iso_code","co2_per_capita"])
 
-        #set selected countries:
-        if clickData is None:
-            clickData = {"points":[{"hovertext":"Germany"}]}
-        select_country(name=clickData["points"][0]["hovertext"])
+        #create selected and unselected dataframes
+        df_selected = df_of_year[df_of_year["iso_code"].isin(const.country_names)]
+        df_unselected = df_of_year[~df_of_year["iso_code"].isin(const.country_names)]
 
         #create the choropleth map
         fig = px.choropleth(df_of_year,locations="iso_code",
@@ -67,17 +70,16 @@ def render(app:Dash, df:pd.DataFrame)->html.Div:
                             yanchor='top',
                             y=0
                         )
-        #Change Annotation text color
-        #fig.update_annotations(
-        #    font=dict(color="#f5deb3")
-        #)
+        #Change traces text color
+        fig.update_traces(selected_marker_opacity=1.0, unselected_marker_opacity=0.5, selector=dict(type='choropleth'))
+        
 
         return html.Div(
             children=[
                 dcc.Graph(id=ids.CHOROPLETH_GRAPH,
                           figure=fig,style={'width': '90vw', 'height': '70vh'}),
                 html.Label(str(clickData)),
-                html.Label(list(COUNTRY_NAMES))
+                html.Label(list(const.country_names))
             ],
             id=ids.CHOROPLETH
         )
