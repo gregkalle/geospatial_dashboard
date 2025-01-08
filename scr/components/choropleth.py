@@ -37,6 +37,7 @@ def render(app:Dash, df:pd.DataFrame)->html.Div:
         df_selected = df_of_year[df_of_year["iso_code"].isin(const.country_names)]
         df_unselected = df_of_year[~df_of_year["iso_code"].isin(const.country_names)]
 
+
         #create the choropleth map
         fig = px.choropleth(df_selected,locations="iso_code",
                             color='co2_per_capita',
