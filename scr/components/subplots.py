@@ -42,6 +42,7 @@ def render(app:Dash, df:pd.DataFrame):
     for country in const.country_names:
         fig.add_trace(go.Histogram(
             x=df[df["iso_code"]==country]["co2"],
+            nbinsx=len(df[df["iso_code"]==country]["co2"]),
             cumulative_enabled=True,
             name=country),
             row=1,col=2)
