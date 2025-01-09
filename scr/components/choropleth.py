@@ -14,6 +14,9 @@ def select_country(name:str)-> None:
 
 def render(app:Dash, df:pd.DataFrame)->html.Div:
 
+    #drop the rows with missing values
+    df = df.dropna(subset=["iso_code","co2_per_capita"])
+
     @app.callback(Output(ids.CHOROPLETH, "children"),
                 [Input(ids.DROPDOWN_CONTINENT, "value"),
                  Input(ids.DROPDOWN_YEAR,"value"),
@@ -27,11 +30,11 @@ def render(app:Dash, df:pd.DataFrame)->html.Div:
         if clickData is not None:
             select_country(name=clickData["points"][0]['location'])
         
+
+
         #get data from selected year
         df_of_year = df[df["year"]==year]
         
-        #drop the rows with missing values
-        df_of_year = df_of_year.dropna(subset=["iso_code","co2_per_capita"])
 
         #create selected and unselected dataframes
         df_selected = df_of_year[df_of_year["iso_code"].isin(const.country_names)]
