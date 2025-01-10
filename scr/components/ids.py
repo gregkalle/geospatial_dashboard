@@ -22,3 +22,4 @@ SELECTED_COUNTRIES = "selected-countries"
 #subplots
 SUPLOTS = "subplots"
 SUPLOTS_CONTAINER = "subplots-container"
+SUPLOTS_GRAPH = "subplots-graph"
