@@ -4,6 +4,7 @@ import pandas as pd
 
 @dataclasses.dataclass
 class Values:
+    year:int
     """Constant and variable values of the dashboard as a Dataclass."""
     START_YEAR:int = 1990
     #url to the data
@@ -21,12 +22,14 @@ class Values:
     DEFAULT_NATION:dict[str:str] = dataclasses.field(default_factory=dict)
     #title of the subplots
     SUBPLOT_TITLE:tuple[str] = ("title1","title2","title3")
+    region:str = "world"
 
     def __init__(self,*args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.df = pd.read_csv(self.DATA_URL)
         self.DEFAULT_NATION = dict(zip(self.ALL_CONTINENTS,self.ALL_DEFAULT_ISO))
         self.country_names = {"DEU"}
+        self.year = self.df["year"].max()
 
     def clear(self):
         self.country_names.clear()
