@@ -23,12 +23,11 @@ def render_trace(df:pd.DataFrame, trace_name:str, opacity:float = 1)->px.choropl
                         name = trace_name)
     return trace
 
-def render_layout(year:int, region:str)->dict:
+def render_layout(year:int, values:Values)->dict:
     return {"title" : f"CO2 per capita in {year}",
             "title_font_color" : COLOR["text"],
             "title_x":0.5,
-            "paper_bgcolor":COLOR["background"],
-            "uirevision": region}
+            "paper_bgcolor":COLOR["background"]}
 
 def render_trace_update()->dict:
     hovertext = "{" + "hovertext" + "}"
@@ -49,7 +48,7 @@ def render_annotation(values:Values)->dict:
             "xanchor":"right",
             "x":0.5,
             "yanchor":"bottom",
-            "y":0.05,
+            "y":-0.05,
             "showarrow":False,
             "font":{"color":COLOR["text"]}}
 
@@ -72,7 +71,7 @@ def render(app:Dash, values:Values)->html.Div:
 
     #update the layout
     fig.update_layout(
-        render_layout(values.year, values.region)
+        render_layout(values.year, values)
     )
 
     #update the font of the colorbar
@@ -96,12 +95,20 @@ def render(app:Dash, values:Values)->html.Div:
     def update_choropleth(region:str, year:int, clickData:dict)->dict:
 
         #set selected countries:
-        if clickData is None and len(values.country_names) == 0:
+        if (not region == values.region) and (len(values.country_names)) > 0:
+            pass
+        elif (not region == values.region) and (len(values.country_names) == 0):
             clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
-        if clickData is not None:
             values.select_country(name=clickData["points"][0]['location'])
+        elif not year == values.year and len(values.country_names) > 0:
+            pass
+        else:
+            if clickData is None and len(values.country_names) == 0:
+                clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
+            if clickData is not None:
+                values.select_country(name=clickData["points"][0]['location'])
         print(values.country_names)
-        
+
         df_selected, df_unselected = get_selected_unselected_data(df, year, values.country_names)
 
         #create the choropleth map
@@ -122,7 +129,14 @@ def render(app:Dash, values:Values)->html.Div:
         fig.update_geos(
             scope=region
         )
-        
+
+        fig.update_layout(
+            uirevision = region
+        )
+
+        values.region = region
+        values.year = year
+
         return {"data": fig.data, "layout": fig.layout}
         
 
