@@ -1,8 +1,9 @@
 from dash import Dash, html, dcc
 import components.ids as ids
+from components.app_variables import Values
 from assets.style import DROPDOWN_STYLE
 
-def render(app:Dash)->html.Span:
+def render(app:Dash, values:Values)->html.Span:
 
     #TODO megrate the dataframe in main and add to render-funktions
 
@@ -15,7 +16,7 @@ def render(app:Dash)->html.Span:
             dcc.Dropdown(
                 style=DROPDOWN_STYLE,
                 id=ids.DROPDOWN_CONTINENT,
-                options=[{"label":continent.upper(),"value":continent} for continent in all_continents],
+                options=[{"label":continent.upper(),"value":continent} for continent in values.ALL_CONTINENTS],
                 value=all_continents[0],
                 clearable=False            
             )
