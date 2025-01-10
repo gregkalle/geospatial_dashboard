@@ -28,7 +28,7 @@ def render(app:Dash, values:Values)->html.Div:
     #add traces:
     for country in values.country_names:
         fig.add_trace(go.Scatter(
-            x=df[df["iso_code"]==country]["year"],
+            x=df[df["iso_code"].isin(values.country_names)]["year"],
             y=df[df["iso_code"]==country]["co2_per_capita"],
             name=country,
             ),
