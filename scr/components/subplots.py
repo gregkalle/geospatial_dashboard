@@ -29,24 +29,39 @@ def render(app:Dash, values:Values)->html.Div:
             paper_bgcolor=COLOR["background"]
         )
 
+        
+
         for country in values.country_names:
             fig.add_trace(go.Scatter(
-                x=df[df["iso_code"].isin(values.country_names)]["year"],
                 y=df[df["iso_code"]==country]["co2_per_capita"],
+                x=df[df["iso_code"]==country]["year"],
+                mode="lines",
                 name=country,
+                line_shape = "spline",
                 ),
                 row=1,col=1
                 )
-            fig.add_trace(go.Histogram(
-                x=df[df["iso_code"]==country]["co2"],
+            histogram = fig.add_trace(go.Histogram(
+                y=df[df["iso_code"]==country]["co2"],
+                x=df[df["iso_code"]==country]["year"],
                 nbinsx=len(df[df["iso_code"]==country]["co2"]),
                 cumulative_enabled=True,
                 name=country),
                 row=1,col=2)
+            
+            histogram.update_layout(
+                barmode="stack",
+            )
+
             fig.update_layout(
                 uirevision=clickData,
             )
-            
+        """
+        df_pivot = df[df["iso_code"].isin(values.country_names)]
+        df_pivot = df_pivot.pivot(index="year",columns="iso_code",values="co2")
+        """
+
+          
         return html.Div(
             children=[
                 dcc.Graph(figure=fig,style={'width': '90vw', 'height': '120vh'},id=ids.SUPLOTS_GRAPH)
@@ -58,7 +73,7 @@ def render(app:Dash, values:Values)->html.Div:
 
     return html.Div(
         children=[
-            dcc.Graph(style={'width': '90vw', 'height': '120vh'},id=ids.SUPLOTS_GRAPH),
+            dcc.Graph(style={'width': '90vw', 'height': '80vh'},id=ids.SUPLOTS_GRAPH),
         ],
         id=ids.SUPLOTS
     )

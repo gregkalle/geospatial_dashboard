@@ -107,7 +107,6 @@ def render(app:Dash, values:Values)->html.Div:
                 clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
             if clickData is not None:
                 values.select_country(name=clickData["points"][0]['location'])
-        print(values.country_names)
 
         df_selected, df_unselected = get_selected_unselected_data(df, year, values.country_names)
 
@@ -143,7 +142,7 @@ def render(app:Dash, values:Values)->html.Div:
     return html.Div(
         children=[
             dcc.Graph(id=ids.CHOROPLETH_GRAPH,
-                      style={'width': '95vw', 'height': '70vh'},
+                      style={'width': '95vw', 'height': '60vh'},
                       figure=px.choropleth())
         ],
         id=ids.CHOROPLETH

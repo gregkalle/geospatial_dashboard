@@ -5,6 +5,7 @@ import pandas as pd
 @dataclasses.dataclass
 class Values:
     year:int
+    year_min:int
     """Constant and variable values of the dashboard as a Dataclass."""
     START_YEAR:int = 1990
     #url to the data
@@ -30,6 +31,7 @@ class Values:
         self.DEFAULT_NATION = dict(zip(self.ALL_CONTINENTS,self.ALL_DEFAULT_ISO))
         self.country_names = {"DEU"}
         self.year = self.df["year"].max()
+        self.year_min = self.df["year"].min()
 
     def clear(self):
         self.country_names.clear()
