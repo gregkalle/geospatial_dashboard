@@ -56,11 +56,6 @@ def render(app:Dash, values:Values)->html.Div:
             fig.update_layout(
                 uirevision=clickData,
             )
-        """
-        df_pivot = df[df["iso_code"].isin(values.country_names)]
-        df_pivot = df_pivot.pivot(index="year",columns="iso_code",values="co2")
-        """
-
           
         return html.Div(
             children=[
