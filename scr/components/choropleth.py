@@ -27,7 +27,8 @@ def render_layout(year:int, values:Values)->dict:
     return {"title" : f"CO2 per capita in {year}",
             "title_font_color" : COLOR["text"],
             "title_x":0.5,
-            "paper_bgcolor":COLOR["background"]}
+            "paper_bgcolor":COLOR["background"],
+            "margin":{"b":20}}
 
 def render_trace_update()->dict:
     hovertext = "{" + "hovertext" + "}"
