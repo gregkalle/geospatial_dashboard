@@ -115,8 +115,6 @@ def render(app:Dash, values:Values)->html.Div:
         elif ctx.triggered_id == ids.SUPLOTS_GRAPH:
             if clickData_suplots is not None and clickData_suplots["points"][0]["curveNumber"]%2 == 1:
                 values.select_one_country(iso_code=figure["data"][clickData_suplots["points"][0]["curveNumber"]]["name"][0:3])
-                
-        print(values.country_iso_codes)
 
         df_selected, df_unselected = get_selected_unselected_data(df, year, values.country_iso_codes)
 
