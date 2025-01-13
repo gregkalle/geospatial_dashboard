@@ -48,5 +48,5 @@ class Values:
         else:
             self.add_country(iso_code)
 
-    def selct_one_country(self, iso_code:str)->None:
+    def select_one_country(self, iso_code:str)->None:
         self.country_iso_codes = [iso_code]
