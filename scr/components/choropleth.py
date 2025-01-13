@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, dcc, Input, Output, State, ctx
 import plotly.express as px
 import pandas as pd
 from components.app_variables import Values
@@ -91,23 +91,32 @@ def render(app:Dash, values:Values)->html.Div:
     @app.callback(Output(ids.CHOROPLETH_GRAPH, "figure"),
                 [Input(ids.DROPDOWN_CONTINENT, "value"),
                  Input(ids.DROPDOWN_YEAR,"value"),
-                 Input(ids.CHOROPLETH_GRAPH,"clickData")
-                ])
-    def update_choropleth(region:str, year:int, clickData:dict)->dict:
-
-        #set selected countries:
-        if (not region == values.region) and (len(values.country_iso_codes)) > 0:
-            pass
-        elif (not region == values.region) and (len(values.country_iso_codes) == 0):
-            clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
-            values.select_country(iso_code=clickData["points"][0]['location'])
-        elif not year == values.year and len(values.country_iso_codes) > 0:
-            pass
-        else:
-            if clickData is None and len(values.country_iso_codes) == 0:
-                clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
-            if clickData is not None:
-                values.select_country(iso_code=clickData["points"][0]['location'])
+                 Input(ids.CHOROPLETH_GRAPH,"clickData"),
+                 Input(ids.SUPLOTS_GRAPH,"clickData")
+                ],
+                State(ids.SUPLOTS_GRAPH,"figure")
+                )
+    def update_choropleth(region:str, year:int, clickData_choropleth:dict, clickData_suplots:dict, figure:dict)->dict:
+        
+        if ctx.triggered_id == ids.CHOROPLETH_GRAPH:
+            #set selected countries:
+            if (not region == values.region) and (len(values.country_iso_codes)) > 0:
+                pass
+            elif (not region == values.region) and (len(values.country_iso_codes) == 0):
+                clickData_choropleth = {"points":[{'location':values.DEFAULT_NATION[region]}]}
+                values.select_country(iso_code=clickData_choropleth["points"][0]['location'])
+            elif not year == values.year and len(values.country_iso_codes) > 0:
+                pass
+            else:
+                if clickData_choropleth is None and len(values.country_iso_codes) == 0:
+                    clickData_choropleth = {"points":[{'location':values.DEFAULT_NATION[region]}]}
+                if clickData_choropleth is not None:
+                    values.select_country(iso_code=clickData_choropleth["points"][0]['location'])
+        elif ctx.triggered_id == ids.SUPLOTS_GRAPH:
+            if clickData_suplots is not None and clickData_suplots["points"][0]["curveNumber"]%2 == 1:
+                values.select_one_country(iso_code=figure["data"][clickData_suplots["points"][0]["curveNumber"]]["name"][0:3])
+                
+        print(values.country_iso_codes)
 
         df_selected, df_unselected = get_selected_unselected_data(df, year, values.country_iso_codes)
 
