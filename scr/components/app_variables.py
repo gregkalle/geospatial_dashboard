@@ -24,6 +24,7 @@ class Values:
     #title of the subplots
     SUBPLOT_TITLE:tuple[str] = ("title1","title2","title3")
     region:str = "world"
+    SUBPLOT_COLOR_OFFSET:int = 0
 
     def __init__(self,*args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

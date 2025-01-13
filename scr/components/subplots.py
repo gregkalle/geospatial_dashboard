@@ -1,5 +1,5 @@
 """renders a div with a figure of three diffrent plots conected to the choropleth"""
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, dcc, Input, Output, State, ctx
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from plotly.colors import qualitative
@@ -14,8 +14,12 @@ def render(app:Dash, values:Values)->html.Div:
     df = values.df.dropna(subset=["co2","co2_per_capita"])
 
     #add traces:
-    @app.callback(Output(ids.SUPLOTS, "children"), Input(ids.CHOROPLETH_GRAPH, "clickData"))
-    def update_subplots(clickData:dict)->dict:
+    @app.callback(Output(ids.SUPLOTS, "children"),
+                  [Input(ids.CHOROPLETH_GRAPH, "clickData"),
+                   Input(ids.SUPLOTS_GRAPH, "clickData")],
+                   State(ids.SUPLOTS_GRAPH, "figure"))
+    def update_subplots(clickData_choropleth:dict, clickData_suplots:dict, figure_before:dict)->dict:
+        
 
         fig = make_subplots(
         rows=1, cols=2,
@@ -32,6 +36,7 @@ def render(app:Dash, values:Values)->html.Div:
             font_color=COLOR["text"],
         )
 
+        print(values.country_iso_codes)
 
         fig.update_xaxes(
             title="year"
@@ -45,9 +50,14 @@ def render(app:Dash, values:Values)->html.Div:
             title="co2",
             row=1,col=2
         )
-        
 
-        for i,country in enumerate(values.country_iso_codes):
+        iso_code = [country for country in values.country_iso_codes]
+        
+        if ctx.triggered_id == ids.SUPLOTS_GRAPH and clickData_suplots["points"][0]["curveNumber"]%2 == 1:
+            iso_code = [figure_before["data"][clickData_suplots["points"][0]["curveNumber"]]["name"][0:3]]
+            values.SUBPLOT_COLOR_OFFSET = clickData_suplots["points"][0]["curveNumber"]//2 or values.SUBPLOT_COLOR_OFFSET
+        
+        for i,country in enumerate(iso_code):
             scatter = fig.add_trace(go.Scatter(
                 y=df[df["iso_code"]==country]["co2_per_capita"],
                 x=df[df["iso_code"]==country]["year"],
@@ -59,7 +69,7 @@ def render(app:Dash, values:Values)->html.Div:
                 row=1,col=1
                 )
             scatter.update_traces(
-                line=dict(color=qualitative.Dark24[i%24]),
+                line=dict(color=qualitative.Dark24[(i+values.SUBPLOT_COLOR_OFFSET)%24]),
                 selector={"name":str(country) + " co2/capita"})
             
             histogram = fig.add_trace(go.Histogram(
@@ -68,7 +78,7 @@ def render(app:Dash, values:Values)->html.Div:
                 nbinsx=len(df[df["iso_code"]==country]["co2"]),
                 cumulative_enabled=True,
                 name=str(country) + " co2",
-                marker=dict(color=qualitative.Dark24[i%24]),
+                marker=dict(color=qualitative.Dark24[(i+values.SUBPLOT_COLOR_OFFSET)%24]),
                 ),
                 row=1,col=2)
 
@@ -78,7 +88,7 @@ def render(app:Dash, values:Values)->html.Div:
             )
 
             fig.update_layout(
-                uirevision=clickData,
+                uirevision=clickData_choropleth,
             )
 
           
