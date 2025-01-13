@@ -18,8 +18,9 @@ def render(app:Dash, values:Values)->html.Div:
     def update_subplots(clickData:dict)->dict:
 
         fig = make_subplots(
-        rows=2, cols=2,
-        specs=[[{"type": "scatter"},{"type": "histogram"}],[{"type": "scatter"},None]],
+        rows=1, cols=2,
+        specs=[[{"type": "scatter"},{"type": "histogram"}]],
+        subplot_titles=["CO2 per capita","CO2 cumulative"],
         )
     
         #update figure layout
@@ -27,7 +28,8 @@ def render(app:Dash, values:Values)->html.Div:
             title="***placeholder***",
             title_font_color=COLOR["text"],
             title_x=0.5,
-            paper_bgcolor=COLOR["background"]
+            paper_bgcolor=COLOR["background"],
+            font_color=COLOR["text"],
         )
 
         
@@ -37,22 +39,22 @@ def render(app:Dash, values:Values)->html.Div:
                 y=df[df["iso_code"]==country]["co2_per_capita"],
                 x=df[df["iso_code"]==country]["year"],
                 mode="lines",
-                name=str(country) + "_scatter",
-                line_shape = "spline"
+                name=str(country) + " co2/capita",
+                line_shape = "spline",
                 ),
                 row=1,col=1
                 )
             scatter.update_traces(
                 line=dict(color=qualitative.Dark24[i%24]),
-                selector={"name":str(country) + "_scatter"})
+                selector={"name":str(country) + "co2 per capita"})
             
             histogram = fig.add_trace(go.Histogram(
                 y=df[df["iso_code"]==country]["co2"],
                 x=df[df["iso_code"]==country]["year"],
                 nbinsx=len(df[df["iso_code"]==country]["co2"]),
                 cumulative_enabled=True,
-                name=str(country) + "_histogram",
-                marker=dict(color=qualitative.Dark24[i%24])
+                name=str(country) + " co2",
+                marker=dict(color=qualitative.Dark24[i%24]),
                 ),
                 row=1,col=2)
 
@@ -64,10 +66,11 @@ def render(app:Dash, values:Values)->html.Div:
             fig.update_layout(
                 uirevision=clickData,
             )
+
           
         return html.Div(
             children=[
-                dcc.Graph(figure=fig,style={'width': '90vw', 'height': '120vh'},id=ids.SUPLOTS_GRAPH)
+                dcc.Graph(figure=fig,style={'width': '95vw', 'height': '55vh'},id=ids.SUPLOTS_GRAPH)
             ],
             id=ids.SUPLOTS
         )
@@ -76,7 +79,7 @@ def render(app:Dash, values:Values)->html.Div:
 
     return html.Div(
         children=[
-            dcc.Graph(style={'width': '90vw', 'height': '80vh'},id=ids.SUPLOTS_GRAPH),
+            dcc.Graph(style={'width': '95vw', 'height': '55vh'},id=ids.SUPLOTS_GRAPH),
         ],
         id=ids.SUPLOTS
     )
