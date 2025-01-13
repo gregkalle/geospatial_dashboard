@@ -36,7 +36,6 @@ def render(app:Dash, values:Values)->html.Div:
             font_color=COLOR["text"],
         )
 
-        print(values.country_iso_codes)
 
         fig.update_xaxes(
             title="year"
@@ -55,7 +54,7 @@ def render(app:Dash, values:Values)->html.Div:
         
         if ctx.triggered_id == ids.SUPLOTS_GRAPH and clickData_suplots["points"][0]["curveNumber"]%2 == 1:
             iso_code = [figure_before["data"][clickData_suplots["points"][0]["curveNumber"]]["name"][0:3]]
-            values.SUBPLOT_COLOR_OFFSET = clickData_suplots["points"][0]["curveNumber"]//2 or values.SUBPLOT_COLOR_OFFSET
+            values.SUBPLOT_COLOR_OFFSET += clickData_suplots["points"][0]["curveNumber"]//2
         
         for i,country in enumerate(iso_code):
             scatter = fig.add_trace(go.Scatter(
