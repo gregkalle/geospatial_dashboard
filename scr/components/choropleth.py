@@ -60,7 +60,7 @@ def render(app:Dash, values:Values)->html.Div:
     df = values.df.dropna(subset=["iso_code","co2_per_capita"])
 
     #make selected and unselected df
-    df_selected, df_unselected = get_selected_unselected_data(df, values.year, values.country_names)
+    df_selected, df_unselected = get_selected_unselected_data(df, values.year, values.country_iso_codes)
     
     #create the choropleth map
     fig = render_trace(df=df_selected, trace_name=ids.SELECTED_COUNTRIES)
@@ -96,20 +96,20 @@ def render(app:Dash, values:Values)->html.Div:
     def update_choropleth(region:str, year:int, clickData:dict)->dict:
 
         #set selected countries:
-        if (not region == values.region) and (len(values.country_names)) > 0:
+        if (not region == values.region) and (len(values.country_iso_codes)) > 0:
             pass
-        elif (not region == values.region) and (len(values.country_names) == 0):
+        elif (not region == values.region) and (len(values.country_iso_codes) == 0):
             clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
-            values.select_country(name=clickData["points"][0]['location'])
-        elif not year == values.year and len(values.country_names) > 0:
+            values.select_country(iso_code=clickData["points"][0]['location'])
+        elif not year == values.year and len(values.country_iso_codes) > 0:
             pass
         else:
-            if clickData is None and len(values.country_names) == 0:
+            if clickData is None and len(values.country_iso_codes) == 0:
                 clickData = {"points":[{'location':values.DEFAULT_NATION[region]}]}
             if clickData is not None:
-                values.select_country(name=clickData["points"][0]['location'])
+                values.select_country(iso_code=clickData["points"][0]['location'])
 
-        df_selected, df_unselected = get_selected_unselected_data(df, year, values.country_names)
+        df_selected, df_unselected = get_selected_unselected_data(df, year, values.country_iso_codes)
 
         #create the choropleth map
 

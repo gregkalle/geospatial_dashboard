@@ -47,7 +47,7 @@ def render(app:Dash, values:Values)->html.Div:
         )
         
 
-        for i,country in enumerate(values.country_names):
+        for i,country in enumerate(values.country_iso_codes):
             scatter = fig.add_trace(go.Scatter(
                 y=df[df["iso_code"]==country]["co2_per_capita"],
                 x=df[df["iso_code"]==country]["year"],

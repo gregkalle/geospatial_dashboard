@@ -16,7 +16,7 @@ class Values:
     #data source url
     DATA_SOURCE_URL:str="https://github.com/owid/co2-data"
     #this variable change its value allong the programm
-    country_names:list[str]=dataclasses.field(default_factory=list)
+    country_iso_codes:list[str]=dataclasses.field(default_factory=list)
     #default values
     ALL_CONTINENTS:tuple[str] = ('world','africa', 'asia', 'europe', 'north america', 'south america')
     ALL_DEFAULT_ISO:tuple[str] = ("DEU","ZAF","CHN","DEU","USA","BRA")
@@ -29,21 +29,24 @@ class Values:
         super().__init__(*args, **kwargs)
         self.df = pd.read_csv(self.DATA_URL)
         self.DEFAULT_NATION = dict(zip(self.ALL_CONTINENTS,self.ALL_DEFAULT_ISO))
-        self.country_names = ["DEU"]
+        self.country_iso_codes = ["DEU"]
         self.year = self.df["year"].max()
         self.year_min = self.df["year"].min()
 
     def clear(self):
-        self.country_names = []
+        self.country_iso_codes = []
 
-    def add_country(self,name:str)->None:
-        self.country_names.append(name)
+    def add_country(self,iso_code:str)->None:
+        self.country_iso_codes.append(iso_code)
 
-    def remove_country(self,name:str)->None:
-        self.country_names.remove(name)
+    def remove_country(self,iso_code:str)->None:
+        self.country_iso_codes.remove(iso_code)
 
-    def select_country(self,name:str)-> None:
-        if name in self.country_names:
-            self.remove_country(name)
+    def select_country(self,iso_code:str)-> None:
+        if iso_code in self.country_iso_codes:
+            self.remove_country(iso_code)
         else:
-            self.add_country(name)
+            self.add_country(iso_code)
+
+    def selct_one_country(self, iso_code:str)->None:
+        self.country_iso_codes = [iso_code]
