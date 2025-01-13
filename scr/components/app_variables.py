@@ -7,7 +7,7 @@ class Values:
     year:int
     year_min:int
     """Constant and variable values of the dashboard as a Dataclass."""
-    START_YEAR:int = 1990
+    START_YEAR:int = 1950
     #url to the data
     DATA_URL:str="https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv"
     df:pd.DataFrame = dataclasses.field(default_factory=pd.DataFrame)
