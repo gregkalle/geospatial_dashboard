@@ -32,12 +32,26 @@ def render(app:Dash, values:Values)->html.Div:
             font_color=COLOR["text"],
         )
 
+
+        fig.update_xaxes(
+            title="year"
+        )
+
+        fig.update_yaxes(
+            title="co2 per capita",
+            row=1,col=1
+        )
+        fig.update_yaxes(
+            title="co2",
+            row=1,col=2
+        )
         
 
         for i,country in enumerate(values.country_names):
             scatter = fig.add_trace(go.Scatter(
                 y=df[df["iso_code"]==country]["co2_per_capita"],
                 x=df[df["iso_code"]==country]["year"],
+
                 mode="lines",
                 name=str(country) + " co2/capita",
                 line_shape = "spline",
@@ -46,7 +60,7 @@ def render(app:Dash, values:Values)->html.Div:
                 )
             scatter.update_traces(
                 line=dict(color=qualitative.Dark24[i%24]),
-                selector={"name":str(country) + "co2 per capita"})
+                selector={"name":str(country) + " co2/capita"})
             
             histogram = fig.add_trace(go.Histogram(
                 y=df[df["iso_code"]==country]["co2"],
