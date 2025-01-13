@@ -16,7 +16,7 @@ class Values:
     #data source url
     DATA_SOURCE_URL:str="https://github.com/owid/co2-data"
     #this variable change its value allong the programm
-    country_names:set[str]=dataclasses.field(default_factory=set)
+    country_names:list[str]=dataclasses.field(default_factory=list)
     #default values
     ALL_CONTINENTS:tuple[str] = ('world','africa', 'asia', 'europe', 'north america', 'south america')
     ALL_DEFAULT_ISO:tuple[str] = ("DEU","ZAF","CHN","DEU","USA","BRA")
@@ -29,15 +29,15 @@ class Values:
         super().__init__(*args, **kwargs)
         self.df = pd.read_csv(self.DATA_URL)
         self.DEFAULT_NATION = dict(zip(self.ALL_CONTINENTS,self.ALL_DEFAULT_ISO))
-        self.country_names = {"DEU"}
+        self.country_names = ["DEU"]
         self.year = self.df["year"].max()
         self.year_min = self.df["year"].min()
 
     def clear(self):
-        self.country_names.clear()
+        self.country_names = []
 
     def add_country(self,name:str)->None:
-        self.country_names.add(name)
+        self.country_names.append(name)
 
     def remove_country(self,name:str)->None:
         self.country_names.remove(name)

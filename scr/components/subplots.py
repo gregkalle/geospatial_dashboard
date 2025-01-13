@@ -2,6 +2,7 @@
 from dash import Dash, html, dcc, Input, Output
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from plotly.colors import qualitative
 #import pycountry_convert as pc
 from components.app_variables import Values
 import components.ids as ids
@@ -31,26 +32,33 @@ def render(app:Dash, values:Values)->html.Div:
 
         
 
-        for country in values.country_names:
-            fig.add_trace(go.Scatter(
+        for i,country in enumerate(values.country_names):
+            scatter = fig.add_trace(go.Scatter(
                 y=df[df["iso_code"]==country]["co2_per_capita"],
                 x=df[df["iso_code"]==country]["year"],
                 mode="lines",
-                name=country,
-                line_shape = "spline",
+                name=str(country) + "_scatter",
+                line_shape = "spline"
                 ),
                 row=1,col=1
                 )
+            scatter.update_traces(
+                line=dict(color=qualitative.Dark24[i%24]),
+                selector={"name":str(country) + "_scatter"})
+            
             histogram = fig.add_trace(go.Histogram(
                 y=df[df["iso_code"]==country]["co2"],
                 x=df[df["iso_code"]==country]["year"],
                 nbinsx=len(df[df["iso_code"]==country]["co2"]),
                 cumulative_enabled=True,
-                name=country),
+                name=str(country) + "_histogram",
+                marker=dict(color=qualitative.Dark24[i%24])
+                ),
                 row=1,col=2)
-            
+
+
             histogram.update_layout(
-                barmode="stack",
+                barmode="stack"
             )
 
             fig.update_layout(
