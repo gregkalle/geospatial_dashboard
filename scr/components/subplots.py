@@ -74,7 +74,6 @@ def render(app:Dash, values:Values)->html.Div:
             histogram = fig.add_trace(go.Histogram(
                 y=df[df["iso_code"]==country]["co2"],
                 x=df[df["iso_code"]==country]["year"],
-                nbinsx=len(df[df["iso_code"]==country]["co2"]),
                 cumulative_enabled=True,
                 name=str(country) + " co2",
                 marker=dict(color=qualitative.Dark24[(i+values.SUBPLOT_COLOR_OFFSET)%24]),
@@ -90,6 +89,11 @@ def render(app:Dash, values:Values)->html.Div:
                 uirevision=clickData_choropleth,
             )
 
+        fig.update_traces(
+            row=1,col=2,
+            x=df[df["iso_code"].isin(iso_code)]["year"].unique(),
+            nbinsx=len(df[df["iso_code"].isin(iso_code)]["year"].unique()),
+        )
           
         return html.Div(
             children=[
