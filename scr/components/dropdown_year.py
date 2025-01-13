@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, Input, Output
 import components.ids as ids
 from components.app_variables import Values
 from assets.style import DROPDOWN_STYLE
@@ -10,6 +10,14 @@ def render(app:Dash, values:Values)->html.Span:
     max_year = 2023
     
     selectable_years = [max_year - i for i in range(max_year-values.START_YEAR+1)]
+
+    @app.callback(Output(ids.DROPDOWN_YEAR, "value"), [Input(ids.SUPLOTS_GRAPH, "clickData"),Input(ids.DROPDOWN_YEAR,"value")])
+    def update_year(clickData:dict, year:int)->int:
+        if clickData is None or clickData["points"][0]["curveNumber"]%2 == 1:
+            return year
+        if clickData["points"][0]["x"] >= values.START_YEAR:
+            return int(clickData["points"][0]["x"])
+        return values.START_YEAR
 
     return html.Span(className=ids.DROPDOWN_SPAN,
         children=[
