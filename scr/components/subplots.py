@@ -9,6 +9,24 @@ from components.app_variables import Values
 import components.ids as ids
 from assets.style import COLOR
 
+def get_histo_data(df:pd.DataFrame, iso_code:list[str])->pd.DataFrame:
+    """gets the data for the histogram
+
+    Args:
+        df (pd.DataFrame): The dataframe with the data
+        iso_code (list[str]): The iso codes of the countries
+
+    Returns:
+        pd.DataFrame: The dataframe with the data
+    """
+    if iso_code:
+            #get the data frames for the histogram
+            histo_data_frames = [df[df["iso_code"]==country][["year","co2"]].rename(columns={"co2":str(country)}) for country in iso_code]
+            #merge the data frames
+            histo_data = reduce(lambda left, right: pd.merge(left, right, on="year", how="outer"), histo_data_frames)
+            return histo_data.fillna(0)
+    return pd.DataFrame()
+
 def render(app:Dash, values:Values)->html.Div:
     """Renders a div with a figure of three diffrent plots conected to the choropleth.
 
@@ -78,11 +96,8 @@ def render(app:Dash, values:Values)->html.Div:
             #update the color offset
             values.SUBPLOT_COLOR_OFFSET += clickData_suplots["points"][0]["curveNumber"]//2
         
-        #get the data frames for the histogram
-        histo_data_frames = [df[df["iso_code"]==country][["year","co2"]].rename(columns={"co2":str(country)}) for country in iso_code]
-        #merge the data frames
-        histo_data = reduce(lambda left, right: pd.merge(left, right, on="year", how="outer"), histo_data_frames)
-        histo_data = histo_data.fillna(0)
+        #get histogram dataframe
+        histo_data = get_histo_data(df, iso_code)
         
         #update the subplots
         for i,country in enumerate(iso_code):
