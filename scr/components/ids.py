@@ -28,3 +28,8 @@ SUPLOTS_GRAPH = "subplots-graph"
 RANGE_SLIDER = "range_slider"
 RANGE_SLIDER_DIV = "range_slider_div"
 RANGE_SLIDER_CONTAIENER = "range_slider_container"
+
+#footprint histo
+FOOTPRINT_HISTO = "footprint-histo"
+FOOTPRINT_HISTO_CONTAINER = "footprint-histo-container"
+FOOTPRINT_HISTO_GRAPH = "footprint-histo-graph"

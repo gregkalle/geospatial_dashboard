@@ -4,6 +4,7 @@ from .dropdown_year import render as dropdown_years
 from .choropleth import render as choropleth
 from .subplots import render as subplots
 from .range_slider import render as range_slider
+from .footprint_histo import render as footprint_histo
 import components.ids as ids
 from components.app_variables import Values
 
@@ -23,7 +24,9 @@ def create_layout(app:Dash,values:Values)->html.Div:
                             children=[subplots(app=app,values=values)]
                         ),
                         html.Div(className=ids.RANGE_SLIDER_CONTAIENER,
-                                 children=[range_slider(app=app,values=values)])
+                                 children=[range_slider(app=app,values=values)]),
+                        html.Div(className=ids.FOOTPRINT_HISTO_CONTAINER,
+                                 children=[footprint_histo(app=app,values=values)])
 
                     ]
     )
