@@ -23,3 +23,8 @@ SELECTED_COUNTRIES = "selected-countries"
 SUPLOTS = "subplots"
 SUPLOTS_CONTAINER = "subplots-container"
 SUPLOTS_GRAPH = "subplots-graph"
+
+#range slider
+RANGE_SLIDER = "range_slider"
+RANGE_SLIDER_DIV = "range_slider_div"
+RANGE_SLIDER_CONTAIENER = "range_slider_container"

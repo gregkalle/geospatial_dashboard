@@ -94,7 +94,7 @@ def render(app:Dash, values:Values)->html.Div:
             #get the selected country
             iso_code = [figure_before["data"][clickData_suplots["points"][0]["curveNumber"]]["name"][0:3]]
             #update the color offset
-            values.SUBPLOT_COLOR_OFFSET += clickData_suplots["points"][0]["curveNumber"]//2
+            values.subplot_color_offset += clickData_suplots["points"][0]["curveNumber"]//2
         
         #get histogram dataframe
         histo_data = get_histo_data(df, iso_code)
@@ -113,7 +113,7 @@ def render(app:Dash, values:Values)->html.Div:
                 )
             #update the scatter traces
             scatter.update_traces(
-                line=dict(color=qualitative.Dark24[(i+values.SUBPLOT_COLOR_OFFSET)%24]),
+                line=dict(color=qualitative.Dark24[(i+values.subplot_color_offset)%24]),
                 selector={"name":str(country) + " co2/capita"})
             
             #add the traces to histogram
@@ -123,7 +123,7 @@ def render(app:Dash, values:Values)->html.Div:
                 cumulative_enabled=True,
                 name=str(country) + " co2",
                 histfunc="sum",
-                marker=dict(color=qualitative.Dark24[(i+values.SUBPLOT_COLOR_OFFSET)%24]),
+                marker=dict(color=qualitative.Dark24[(i+values.subplot_color_offset)%24]),
                 ),
                 row=1,col=2)
             #update the histogram layout

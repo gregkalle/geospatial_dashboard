@@ -9,15 +9,15 @@ def render(app:Dash, values:Values)->html.Span:
     #TODO megrate the dataframe in main and add to render-funktions
     max_year = 2023
     
-    selectable_years = [max_year - i for i in range(max_year-values.START_YEAR+1)]
+    selectable_years = [max_year - i for i in range(max_year-values.YEAR_START+1)]
 
     @app.callback(Output(ids.DROPDOWN_YEAR, "value"), [Input(ids.SUPLOTS_GRAPH, "clickData"),Input(ids.DROPDOWN_YEAR,"value")])
     def update_year(clickData:dict, year:int)->int:
         if clickData is None or clickData["points"][0]["curveNumber"]%2 == 1:
             return year
-        if clickData["points"][0]["x"] >= values.START_YEAR:
+        if clickData["points"][0]["x"] >= values.YEAR_START:
             return int(clickData["points"][0]["x"])
-        return values.START_YEAR
+        return values.YEAR_START
 
     return html.Span(className=ids.DROPDOWN_SPAN,
         children=[

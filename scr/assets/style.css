@@ -54,3 +54,9 @@ button:hover{
     background-color: black;
     left: 20vw;
 }
+
+.range_slider_container{
+    margin-left: 30vw;
+    margin-right: 30vw;
+    text-align: center;
+}

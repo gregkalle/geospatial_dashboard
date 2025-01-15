@@ -5,9 +5,9 @@ import pandas as pd
 @dataclasses.dataclass
 class Values:
     year:int
-    year_min:int
+    YEAR_MAX:int
     """Constant and variable values of the dashboard as a Dataclass."""
-    START_YEAR:int = 1950
+    YEAR_START:int = 1950
     #url to the data
     DATA_URL:str="https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.csv"
     df:pd.DataFrame = dataclasses.field(default_factory=pd.DataFrame)
@@ -24,15 +24,15 @@ class Values:
     #title of the subplots
     SUBPLOT_TITLE:tuple[str] = ("title1","title2","title3")
     region:str = "world"
-    SUBPLOT_COLOR_OFFSET:int = 0
+    subplot_color_offset:int = 0
 
     def __init__(self,*args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.df = pd.read_csv(self.DATA_URL)
         self.DEFAULT_NATION = dict(zip(self.ALL_CONTINENTS,self.ALL_DEFAULT_ISO))
         self.country_iso_codes = ["DEU"]
-        self.year = self.df["year"].max()
-        self.year_min = self.df["year"].min()
+        self.YEAR_MAX = self.df["year"].max()
+        self.year = self.YEAR_MAX
 
     def clear(self):
         self.country_iso_codes = []
